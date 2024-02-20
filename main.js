@@ -3,7 +3,7 @@ let news=[]
 let PAGE_SIZE=20
 const getLatesNews=async()=>{
     
-    const url= new URL(`https://magical-biscochitos-3cd9cf.netlify.app/?country=kr&page=1&pageSize=${PAGE_SIZE}`)
+    const url= new URL(`https://magical-biscochitos-3cd9cf.netlify.app/top-headlines?country=kr&page=1&pageSize=${PAGE_SIZE}`)
     
     const respond=await fetch(url)
     const data=await respond.json()
