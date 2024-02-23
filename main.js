@@ -4,26 +4,44 @@ const menus=document.querySelectorAll(".menus button")
 menus.forEach(menu=>menu.addEventListener("click",(event)=>getNewsByCategory(event)))
 
 let PAGE_SIZE=20
+let url=new URL(`https://magical-biscochitos-3cd9cf.netlify.app/top-headlines`)
+
+const getNew = async()=>{
+    try{
+      const respond=await fetch(url);
+      const data=await respond.json();
+        if(respond.status===200){
+          if(data.articles.length===0){
+            throw new Error("No result for this search")
+          }
+        newsList=data.articles;
+      render();
+      }
+      else{
+        throw new Error(data.message)
+      }
+      
+    } catch(error){
+      errorRender(error.message)
+
+
+    }
+   
+
+}
 const getNews= async () =>{
     
-    const url= new URL(`https://magical-biscochitos-3cd9cf.netlify.app/top-headlines`)
-    
-    const respond=await fetch(url);
-    const data=await respond.json();
-    newsList=data.articles;
-    render();
+    url= new URL(`https://magical-biscochitos-3cd9cf.netlify.app/top-headlines`)
+    getNew()
     
 }
 
 const getNewsByCategory= async (event) =>{
     const category=event.target.textContent.toLowerCase();
     console.log("category",category)
-    const url= new URL(`https://magical-biscochitos-3cd9cf.netlify.app/top-headlines?category=${category}&apiKey=${API_KEY}`);
-    const respond= await fetch(url);
-    const data= await respond.json()
-    console.log("ddd",data);
-    newsList=data.articles;
-    render();
+    url= new URL(`https://magical-biscochitos-3cd9cf.netlify.app/top-headlines?category=${category}&apiKey=${API_KEY}`);
+    
+    getNew()
 
 
 }
@@ -31,12 +49,8 @@ const getNewsByCategory= async (event) =>{
 const getNewsByKeyword=async()=>{
     const keyword=document.getElementById("search-input").value;
     console.log("keyword",keyword);
-    const url=new URL(`https://magical-biscochitos-3cd9cf.netlify.app/top-headlines?q=${keyword}&apiKey=${API_KEY}`)
-    const respond=await fetch(url)
-    const data=await respond.json()
-    console.log("keyword data",data)
-    newsList=data.articles;
-    render()
+    url=new URL(`https://magical-biscochitos-3cd9cf.netlify.app/top-headlines?q=${keyword}&apiKey=${API_KEY}`)
+    getNew()
 }
 
 
@@ -78,6 +92,14 @@ const openNav = () => {
   const closeNav = () => {
     document.getElementById("mySidenav").style.width = "0";
   };
+
+  const errorRender=(errorMessage)=>{
+    const errorHTML=`<div class="alert alert-danger" role="alert">
+  <a href="#" class="alert-link"> ${errorMessage}</a>.
+</div>`
+    document.getElementById("news-board").innerHTML=errorHTML
+  }
+
   getNews();
 
   //1. 버튼들에 클릭이벤트주기
