@@ -116,17 +116,49 @@ const openNav = () => {
     let lastPage= pageGroup * groupSize;
     
     const totalPages=Math.ceil(totalResults/pageSize)
-    const firstPage= lastPage - (groupSize-1)<=0?1: lastPage-(groupSize-1);
+    let firstPage= lastPage - (groupSize-1)<=0?1: lastPage-(groupSize-1);
 
+    let last=pageGroup*5;
 
+    
+   
     if(lastPage>totalPages) {
       lastPage=totalPages;
-    }
+    } firstPage=lastPage-4<=0?1:lastPage-4;
 
-    let paginationHTML=``
-    for(let i=firstPage;i<=lastPage;i++){
-      paginationHTML+=`<li class="page-item ${i===page?'active':''}" onclick="MovetoPage(${i})"><a class="page-link" >${i}</a></li>`
-    }
+    paginationHTML = `<li class="page-item" onclick="MovetoPage(1)">
+    <a class="page-link" href='#js-bottom'>&lt;&lt;</a>
+  </li>
+  <li class="page-item" onclick="MovetoPage(${page - 1})">
+    <a class="page-link" href='#js-bottom'>&lt;</a>
+  </li>`;
+
+
+if (firstPage >= 6) {
+  paginationHTML = `<li class="page-item" onclick="MovetoPage(1)">
+                      <a class="page-link" href='#js-bottom'>&lt;&lt;</a>
+                    </li>
+                    <li class="page-item" onclick="MovetoPage(${page - 1})">
+                      <a class="page-link" href='#js-bottom'>&lt;</a>
+                    </li>`;
+}
+for (let i = firstPage; i <= lastPage; i++) {
+  paginationHTML += `<li class="page-item ${i == page ? "active" : ""}" >
+                      <a class="page-link" href='#js-bottom' onclick="MovetoPage(${i})" >${i}</a>
+                     </li>`;
+}
+
+if (lastPage < totalPages) {
+  paginationHTML += `<li class="page-item" onclick="MovetoPage(${page + 1})">
+                      <a  class="page-link" href='#js-program-detail-bottom'>&gt;</a>
+                     </li>
+                     <li class="page-item" onclick="MovetoPage(${totalPages})">
+                      <a class="page-link" href='#js-bottom'>&gt;&gt;</a>
+                     </li>`;
+}
+
+
+
     document.querySelector(".pagination").innerHTML=paginationHTML
 
 

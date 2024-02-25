@@ -92,6 +92,8 @@
   display: none;
 }
 
+
+
 @media screen and (max-width: 63rem) {
   .hide {
     display: inline;
